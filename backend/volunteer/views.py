@@ -15,19 +15,19 @@ class VolunteerDetailView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
 
 
-class AdminVolunteerUpdateView(generics.UpdateAPIView):
-    queryset = Volunteer.objects.all()
-    serializer_class = AdminVolunteerUpdateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class AdminVolunteerUpdateView(generics.UpdateAPIView):
+#     queryset = Volunteer.objects.all()
+#     serializer_class = AdminVolunteerUpdateSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
-    def update(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not request.user.is_app_admin:
-            raise PermissionDenied("You do not have permission to perform this action.")
-        volunteer = self.get_object()
-        serializer = self.get_serializer(volunteer, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#     def update(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated or not request.user.is_app_admin:
+#             raise PermissionDenied("You do not have permission to perform this action.")
+#         volunteer = self.get_object()
+#         serializer = self.get_serializer(volunteer, data=request.data, partial=True)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_update(serializer)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class VolunteerPersonalUpdateView(generics.UpdateAPIView):
     serializer_class = VolunteerPersonalUpdateSerializer

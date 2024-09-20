@@ -29,13 +29,16 @@ def check_user_type(request):
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    path('admin/', include('admin_panel.urls')),
     path('home/accounts/', include('accounts.urls')),
     path('home/crisis/', include('crisis.urls')),
     path('home/donation/', include('donation.urls')),
     # path('api/inventory/', include('inventory.urls')),
     path('home/volunteer/', include('volunteer.urls')),
-    # path('api/admin/', include('admin_management.urls')),
+    # path('home/volunteer/', include('volunteer.urls')),
+
+    
 ]
 
 # if settings.DEBUG:

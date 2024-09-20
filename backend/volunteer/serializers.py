@@ -29,4 +29,4 @@ class AdminVolunteerUpdateSerializer(serializers.ModelSerializer):
 class VolunteerPersonalUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Volunteer
-        fields = ['age', 'skills', 'is_availabile']
+        fields = ['age', 'skills', 'is_availabile'] 
