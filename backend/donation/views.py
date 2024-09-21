@@ -32,20 +32,22 @@ class DonationPageView(APIView):
             'chart_data': chart_data
         })
 
-class DonationCreateView(generics.CreateAPIView):
-    queryset = Donation.objects.all()
-    serializer_class = DonationSerializer
-    permission_classes = [AllowAny]
-
-    def perform_create(self, serializer):
-        donation = serializer.save()
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-            "donations",
-            {
-                "type": "donation_message",
-            }
-        )
+    def post(self, request):
+        # Handle donation form submission
+        serializer = DonationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            
+            # Send real-time donation update
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "donations",
+                {
+                    "type": "donation_message",
+                }
+            )
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ExpenseCreateView(generics.CreateAPIView):
     queryset = Expense.objects.all()

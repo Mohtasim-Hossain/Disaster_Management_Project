@@ -4,7 +4,7 @@ from .models import Donation, Expense
 class DonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donation
-        fields = '__all__'
+        fields = ['donor_name', 'amount']
 
     def validate_donor_name(self, value):
         if value is None or value.strip() == "":
@@ -14,4 +14,4 @@ class DonationSerializer(serializers.ModelSerializer):
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
-        fields = '__all__'
+        fields = ['description', 'amount', 'date']

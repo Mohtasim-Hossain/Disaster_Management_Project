@@ -42,6 +42,9 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import VolunteerDashboard from './pages/VolunteerDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import CrisisListPage from './pages/CrisisListPage';
+import CrisisDetailsPage from './pages/CrisisDetailsPage';
+import ReportCrisisPage from './pages/ReportCrisisPage';
 
 function App() {
   return (
@@ -52,6 +55,9 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/crisis" element={<CrisisListPage />} />
+        <Route path="/crisis/:id" element={<CrisisDetailsPage />} />
+        <Route path="/crisis/report" element={<ReportCrisisPage />} />
         {/* Redirect example */}
         {/* <Route path="*" element={<Navigate to="/login" />} /> */}
       </Routes>
