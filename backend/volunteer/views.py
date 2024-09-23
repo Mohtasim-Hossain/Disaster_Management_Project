@@ -5,40 +5,25 @@ from .models import Volunteer
 from .serializers import VolunteerListSerializer, VolunteerDetailSerializer, AdminVolunteerUpdateSerializer, VolunteerPersonalUpdateSerializer
 
 class VolunteerListView(generics.ListAPIView):
-    queryset = Volunteer.objects.all()
+    queryset = Volunteer.objects.all()  # Retrieve all volunteer records
     serializer_class = VolunteerListSerializer  # Use the list serializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]  # Allow any user to access this view
 
 class VolunteerDetailView(generics.RetrieveAPIView):
-    queryset = Volunteer.objects.all()
+    queryset = Volunteer.objects.all()  # Retrieve all volunteer records
     serializer_class = VolunteerDetailSerializer  # Use the detailed serializer
-    permission_classes = [permissions.AllowAny]
-
-
-# class AdminVolunteerUpdateView(generics.UpdateAPIView):
-#     queryset = Volunteer.objects.all()
-#     serializer_class = AdminVolunteerUpdateSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-#     def update(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated or not request.user.is_app_admin:
-#             raise PermissionDenied("You do not have permission to perform this action.")
-#         volunteer = self.get_object()
-#         serializer = self.get_serializer(volunteer, data=request.data, partial=True)
-#         serializer.is_valid(raise_exception=True)
-#         self.perform_update(serializer)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
+    permission_classes = [permissions.AllowAny]  # Allow any user to access this view
 
 class VolunteerPersonalUpdateView(generics.UpdateAPIView):
-    serializer_class = VolunteerPersonalUpdateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = VolunteerPersonalUpdateSerializer  # Use the personal update serializer
+    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can update their information
 
     def get_object(self):
-        return self.request.user.volunteer
+        return self.request.user.volunteer  # Get the volunteer instance associated with the authenticated user
 
     def update(self, request, *args, **kwargs):
-        volunteer = self.get_object()
-        serializer = self.get_serializer(volunteer, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        volunteer = self.get_object()  # Retrieve the volunteer instance
+        serializer = self.get_serializer(volunteer, data=request.data, partial=True)  # Create serializer with new data
+        serializer.is_valid(raise_exception=True)  # Validate the data
+        self.perform_update(serializer)  # Save the updated volunteer information
+        return Response(serializer.data, status=status.HTTP_200_OK)  # Return the updated data in the response

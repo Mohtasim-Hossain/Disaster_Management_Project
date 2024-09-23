@@ -32,7 +32,14 @@ class CrisisListView(generics.ListAPIView):
     queryset = Crisis.objects.filter(is_visible=True)  # Show only approved crises
     serializer_class = CrisisSerializer
     permission_classes = [permissions.AllowAny]  # Allow anyone to view the crises
-    filter_backends = [filters.OrderingFilter]  # Enable ordering filters
+    filter_backends = [filters.OrderingFilter]  
+    ordering_fields = ['created_at', 'severity', 'status']  
+
+class AdminCrisisListView(generics.ListAPIView):
+    queryset = Crisis.objects.all()  # Show all crises
+    serializer_class = CrisisSerializer
+    permission_classes = [permissions.AllowAny]  # Allow anyone to view the crises
+    filter_backends = [filters.OrderingFilter]  
     ordering_fields = ['created_at', 'severity', 'status']  
 
 
@@ -42,37 +49,3 @@ class CrisisDetailView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
 
 
-# class CrisisRetrieveUpdateView(generics.RetrieveUpdateAPIView):
-#     queryset = Crisis.objects.all()
-#     serializer_class = CrisisSerializer
-
-#     def get_serializer_class(self,request, *args, **kwargs):
-
-#         if not request.user.is_authenticated or not request.user.is_app_admin:
-#             raise PermissionDenied("You do not have permission to perform this action.")
-        
-
-#         if self.request.method in ['PUT', 'PATCH']:
-#             return CrisisUpdateSerializer
-#         return CrisisSerializer
-    
-
-    
-# class CrisisApproveView(generics.UpdateAPIView):
-#     queryset = Crisis.objects.all()
-#     serializer_class = CrisisUpdateSerializer
-
-#     def update(self, request, *args, **kwargs):
-
-#         if not request.user.is_authenticated or not request.user.is_app_admin:
-#             raise PermissionDenied("You do not have permission to perform this action.")
-
-#         crisis = self.get_object()
-#         crisis.is_visible = True  
-#         crisis.save()
-
-#         print(request.user.user_type)  # Should output 'ADMIN' for an admin user
-
-
-#         return Response(self.get_serializer(crisis).data, status=status.HTTP_200_OK)
-    

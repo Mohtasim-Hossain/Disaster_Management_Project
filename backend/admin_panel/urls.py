@@ -1,12 +1,12 @@
 from django.urls import path
-from .views import CrisisAdminUpdateView, VolunteerAdminUpdateView
-from crisis.views import CrisisListView
+from .views import CrisisAdminUpdateView, VolunteerAdminUpdateView, ReportView
+from crisis.views import AdminCrisisListView
 from volunteer.views import VolunteerListView
 
 urlpatterns = [
-    path('crisis/', CrisisListView.as_view(), name='crisis-list'),  # Shows all visible crises
-    path('crisis/update/<int:pk>/', CrisisAdminUpdateView.as_view(), name='crisis-update-update'),
-    path('volunteer/', VolunteerListView.as_view(), name='volunteer-list'),  # Shows all visible crises
-    path('volunteer/update/<int:pk>/', VolunteerAdminUpdateView.as_view(), name='volunteer-update-update'),
-    
+    path('crisis/', AdminCrisisListView.as_view(), name='crisis-list'),  # List all visible crises for admins
+    path('crisis/update/<int:pk>/', CrisisAdminUpdateView.as_view(), name='crisis-update'),  # Update a specific crisis by pk
+    path('volunteer/', VolunteerListView.as_view(), name='volunteer-list'),  # List all volunteers
+    path('volunteer/update/<int:pk>/', VolunteerAdminUpdateView.as_view(), name='volunteer-update'),  # Update a specific volunteer by pk
+    path('reports/', ReportView.as_view(), name='admin-report'),  # Access the report view for admins
 ]
