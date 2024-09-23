@@ -1,46 +1,9 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vitejs.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-
+import './App.css';
 import React from 'react';
-import { BrowserRouter as Router, Route, Navigate, Routes } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import HomePage from './pages/HomePage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import VolunteerDashboard from './pages/VolunteerDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import CrisisListPage from './pages/CrisisListPage';
 import CrisisDetailsPage from './pages/CrisisDetailsPage';
@@ -48,29 +11,72 @@ import ReportCrisisPage from './pages/ReportCrisisPage';
 import DonationPage from './pages/DonationPage';
 import VolunteerListPage from './pages/VolunteerListPage';
 import VolunteerDetailsPage from './pages/VolunteerDetailsPage';
-
+import AdminVolunteerListPage from './pages/AdminVolunteerListPage';
+import AdminCrisisListPage from './pages/AdminCrisisListPage';
+import CrisisUpdatePage from './pages/CrisisUpdatePage';
+import VolunteerUpdatePage from './pages/VolunteerUpdatePage';
+import AdminReportsPage from './pages/AdminReportsPage';
+import ProtectedRoute from './components/PrivateRoute';  // Add your ProtectedRoute
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        {/* Public pages */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/crisis" element={<CrisisListPage />} />
         <Route path="/crisis/:id" element={<CrisisDetailsPage />} />
         <Route path="/crisis/report" element={<ReportCrisisPage />} />
         <Route path="/donation" element={<DonationPage />} />
         <Route path="/volunteer" element={<VolunteerListPage />} />
         <Route path="/volunteer/:id" element={<VolunteerDetailsPage />} />
-        {/* Redirect example */}
-        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
+        
+        {/* Protect /admin routes (Admin only) */}
+        <Route path="/admin-dashboard" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/crisis" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminCrisisListPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/crisis/update/:id" element={
+          <ProtectedRoute adminOnly={true}>
+            <CrisisUpdatePage />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/volunteer" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminVolunteerListPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/volunteer/update/:id" element={
+          <ProtectedRoute adminOnly={true}>
+            <VolunteerUpdatePage />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/reports" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminReportsPage />
+          </ProtectedRoute>
+        } />
+
+        {/* Protect /account route (Volunteers only) */}
+        <Route path="/accounts" element={
+          <ProtectedRoute volunteerOnly={true}>
+            <VolunteerUpdatePage />
+          </ProtectedRoute>
+        } />
+
+        {/* Redirect for unknown paths */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
